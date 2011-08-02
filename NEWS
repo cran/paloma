@@ -1,0 +1,7 @@
+NEWS/Changelog
+
+1.0   (2011-08-01)
+      + Initial version 
+
+1.1   (2011-08-02)
+      + fix compiler warnings (compiled with -pedantic -Wall) 

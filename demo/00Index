@@ -1,0 +1,2 @@
+read_graphs     how to read graph files 
+yeast		example on the yeast PPI inteaction network. The network get 194 vertices with 266 edges. The vertices are distributed in 8 classes (mixer package result) and the vertex distribution and the connectivity matrix is given in the "yeast" data file. 

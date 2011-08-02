@@ -1,0 +1,19 @@
+# exportPattern("getExceptional")
+export("getExceptional")
+export("getExtensions")
+export("computeModelMean")
+export("countAllMotifs")
+export("getAllExtensions")
+export("getCanonic")
+export("print.paloma.occurrences")
+export("print.paloma.exceptional")
+export("plot.paloma.exceptional")
+#
+S3method(print, paloma.occurrences)
+S3method(print, paloma.exceptional)
+S3method(plot, paloma.exceptional)
+### Local variables:
+### mode: R
+### End:
+useDynLib(paloma)
+

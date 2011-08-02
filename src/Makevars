@@ -1,0 +1,65 @@
+
+# Used to compile Nauty library without warnings 
+# http://cs.anu.edu.au/~bdm/nauty/
+
+# R_CXXFLAGS= $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -I . -Wall -pedantic
+# R_CFLAGS= $(ALL_CPPFLAGS) $(ALL_CFLAGS) -I . -Wall -pedantic
+
+R_CXXFLAGS= $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -I . 
+R_CFLAGS= $(ALL_CPPFLAGS) $(ALL_CFLAGS) -I . 
+
+all : $(SHLIB)
+
+heap.o : heap.cpp
+	$(CXX) $(R_CXXFLAGS) -c heap.cpp
+
+motif-search.o : motif-search.cpp
+	$(CXX) $(R_CXXFLAGS) -c motif-search.cpp
+
+motif-tree.o : motif-tree.cpp
+	$(CXX) $(R_CXXFLAGS) -c motif-tree.cpp
+
+graphical-models.o : graphical-models.cpp
+	$(CXX) $(R_CXXFLAGS) -c graphical-models.cpp
+
+combinatorics.o : combinatorics.cpp
+	$(CXX) $(R_CXXFLAGS) -c combinatorics.cpp
+
+concentration.o : concentration.cpp
+	$(CXX) $(R_CXXFLAGS) -c concentration.cpp
+
+interface_R_cpp.o : interface_R_cpp.cpp
+	$(CXX) $(R_CXXFLAGS) -c interface_R_cpp.cpp
+
+nr-permutation.o : nr-permutation.cpp
+	$(CXX) $(R_CXXFLAGS) -c nr-permutation.cpp
+
+shrink.o : shrink.cpp
+	$(CXX) $(R_CXXFLAGS) -c shrink.cpp
+
+util.o : util.cpp
+	$(CXX) $(R_CXXFLAGS) -c util.cpp
+
+
+nauty_interface.o : nauty_interface.cpp
+	$(CXX) $(R_CXXFLAGS) -c nauty_interface.cpp
+
+naugraph.o : naugraph.c
+	$(CC) $(R_CFLAGS) -DDEF_BIT -DDEF_BYTECOUNT -c naugraph.c
+
+nautil.o : nautil.c
+	$(CC) $(R_CFLAGS) -DDEF_BIT -DDEF_LEFTBIT -c nautil.c
+
+nautinv.o : nautinv.c
+	$(CC) $(R_CFLAGS) -DDEF_BIT -DDEF_BYTECOUNT -DDEF_LEFTBIT -c nautinv.c
+
+nauty.o : nauty.c
+	$(CC) $(R_CFLAGS) -DDEF_BIT -c nauty.c
+
+vertex_layout.o : vertex_layout.c
+	$(CC) $(R_CFLAGS) -DDEF_BIT -c vertex_layout.c
+
+
+
+
+
