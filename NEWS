@@ -5,3 +5,10 @@ NEWS/Changelog
 
 1.1   (2011-08-02)
       + fix compiler warnings (compiled with -pedantic -Wall) 
+
+1.2   (2011-08-22)
+      + fix package warnings (MacOS, r-devel-linux-ix86)
+
+1.2.1 (2011-08-23)
+      + fix package warnings - pb with 'nauty' (MacOS, r-devel-linux-ix86)
+

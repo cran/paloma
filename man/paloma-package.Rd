@@ -114,12 +114,12 @@ arXiv preprint.
 
 
   [FanMod] S. Wernicke and F. Rasche. FANMOD: a tool for fast network motif detection.
-  Bioinformatics, 22(9):1152–1153, 2006.
+  Bioinformatics, 22(9):1152-1153, 2006.
   
   [FanMod] S. Wernicke.
   Efficient detection of network motifs.
   IEEE/ACM Transactions on Computational Biology and Bioinformatics,
-  3(4):347–359, 2006.
+  3(4):347-359, 2006.
   
   [Nauty] http://cs.anu.edu.au/~bdm/nauty/
   

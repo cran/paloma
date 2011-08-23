@@ -1,6 +1,6 @@
-d8ebfdd0f48347d8d7ae5c80e9b9c914 *DESCRIPTION
+d6f65663ae0fc325418628177fd63839 *DESCRIPTION
 04fd36cecaaef425e9c881893fcdd5b2 *NAMESPACE
-2f29a34fd96d0fcb79614b6bfbeb8c9c *NEWS
+0e55ca9384035750c5528fd95cedc638 *NEWS
 dd97d3e7404f18ce6be9418500744002 *R/Gplot-internals.R
 0d3f08e5b8d92c986f8c6e5e7763c9ef *R/Gplot.R
 713fba6d2a385de9e729dc1074071b63 *R/internals.R
@@ -22,7 +22,7 @@ a49ea188493ca25755aebbaa4cde25b9 *man/getAllExtensions.Rd
 16527aaf4f4f62e437efa4f42199992b *man/getCanonic.Rd
 b7755be97ef453d42a8c98ae3f436ba0 *man/getExceptional.Rd
 566fe08817574c916a0aaab1c0abad5a *man/getExtensions.Rd
-af583ef41f268bef0818545eb8d8de6b *man/paloma-package.Rd
+402e9599e95ad8ed26044977c47f6546 *man/paloma-package.Rd
 95ce2d035037cf4956e33a4db34da3cb *man/plot.exceptional.motif.Rd
 58ab2d5a492442f2f63c2873ecb5de4b *man/print.exceptional.motif.Rd
 9d68906e8b9222e36dc1b2df857ef8bf *man/print.occurrences.Rd
@@ -36,7 +36,7 @@ ca8d3fb0eac370f36f3ca03d8405073d *src/concentration.cpp
 59e116344783873ee7c2f251f11a4549 *src/graphical-models.cpp
 2f7d019d68a6dfe82b9022d75807a153 *src/graphical-models.h
 f545a0e8081d48be6bd0cd6730958771 *src/gtools.h
-3ddd22d511311745065bcc6e960968b5 *src/heap-union.h
+2c4a6527affb92965d3add2dd26f3bd0 *src/heap-union.h
 164fe02c559b3f9694f8d498e3f0ee37 *src/heap.cpp
 781c6dd33e81a969377ff2c2603fa93d *src/heap.h
 0ac2570333c62a65c9f7113cdd3eb9c8 *src/interface_R_cpp.cpp
@@ -50,7 +50,7 @@ c8dc897fd07472672ba297e1d0559416 *src/motif-tree.h
 59c4b3afaeb588c5f150283b1dbfdcb7 *src/nautinv.c
 1580d86af5e687c58580f957a3b99926 *src/nautinv.h
 1ef8019f6a0cf0afc391a5f6b1fbd505 *src/naututil.h
-2c07dffc9072eb2532146f284d553912 *src/nauty.c
+350639ee1e62584360fba5f1bf3a4c5e *src/nauty.c
 45419a0b697505651ad0c6af91149cd6 *src/nauty.h
 947d10f6e6e0d1dd4400ea94c4e96b27 *src/nauty_interface.cpp
 f93214d9b41a6b5d018994e7d5d8e94e *src/nauty_interface.h
@@ -58,7 +58,7 @@ f93214d9b41a6b5d018994e7d5d8e94e *src/nauty_interface.h
 2c34d10111648c36a506e436b0eb49d5 *src/nr-permutation.h
 958f51dfb84a2d2bb89420fef6279a7a *src/shrink.cpp
 f2e9e71c5dbc5817e589b67ca1201b04 *src/shrink.h
-7e906d3d23f2b34228301dc156cd1009 *src/sparse-adjacency.h
+ce3c6407b53d447d5a50aa4434f85dbc *src/sparse-adjacency.h
 60aea6d60e7bebd378066357281855e1 *src/util.cpp
 6ecdb6d094b66325def84788c5b6bff4 *src/util.h
 fa727cb212625d5e24223c1f16607c28 *src/vertex_layout.c

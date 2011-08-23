@@ -1,6 +1,6 @@
 Package: paloma
-Version: 1.1
-Date: 2011/08/02
+Version: 1.2.1
+Date: 2011/08/23
 Title: Poisson Approximation for LOcal Motif Assessment
 Author: Etienne Birmelé, Gilles Grasseau
 Maintainer: <mixer@genopole.cnrs.fr>
@@ -11,6 +11,6 @@ Suggests: igraph
 License: GPL (>= 2)
 URLs: http://www.r-project.org, http://stat.genopole.cnrs.fr
 Encoding: UTF-8
-Packaged: 2011-08-19 09:45:54 UTC; ggrasseau
+Packaged: 2011-08-23 10:17:32 UTC; ggrasseau
 Repository: CRAN
-Date/Publication: 2011-08-19 13:10:40
+Date/Publication: 2011-08-23 20:03:07

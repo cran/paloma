@@ -524,7 +524,6 @@ class SparseAdjacency {
 		    size_t NodeValuesInc = 1 ) { 
 
 
-    int k = 0;
     bool outofbounds = false;
 
     symmetric_ = symmetric;
@@ -534,7 +533,7 @@ class SparseAdjacency {
     //
     // Verify indexes
     //
-    k = _checkEdgeBounds( ij_index );
+    _checkEdgeBounds( ij_index );
     
     if ( outofbounds ) 
       LOGMSG( 1, std::cout, "Index greater than one matrix dimension", "" );

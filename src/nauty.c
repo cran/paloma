@@ -59,8 +59,9 @@
 
 #ifdef NAUTY_IN_MAGMA
 #include "cleanup.e"
-#define NAUTY_ABORT (-11)
+// GG #define NAUTY_ABORT (-11)
 #endif
+#define NAUTY_ABORT (-11)
 
 typedef struct tcnode_struct
 {
@@ -238,7 +239,7 @@ nauty(graph *g_arg, int *lab, int *ptn, set *active_arg,
 {
         register int i;
         int numcells;
-	int retval;
+	// GG int retval;
 #if !MAXN
 	tcnode *tcp,*tcq;
 #endif
@@ -445,16 +446,16 @@ nauty(graph *g_arg, int *lab, int *ptn, set *active_arg,
         needshortprune = FALSE;
         invarsuclevel = INFTY;
         invapplics = invsuccesses = 0;
-
 #if !MAXN
-        retval = firstpathnode0(lab,ptn,1,numcells,&tcnode0);
+        int retval = firstpathnode0(lab,ptn,1,numcells,&tcnode0);
 #else   
-        retval = firstpathnode(lab,ptn,1,numcells);
+        int retval = firstpathnode(lab,ptn,1,numcells);
 #endif  
 
-#ifdef NAUTY_IN_MAGMA
+	// GG #ifdef NAUTY_IN_MAGMA
 	if (retval != NAUTY_ABORT)
-#endif
+	// GG #endif
+
 	{
             if (getcanon)
             {

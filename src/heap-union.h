@@ -144,8 +144,8 @@ int HeapUnion::nextElement() {
   int heap_bottom;
   int heap_top   ;
   int heap_mid   ;
-  int last_index_inf = 0;
-  int last_index_sup = 0;
+  // int last_index_inf = 0;
+  // int last_index_sup = 0;
   bool cont = true;
   bool val = false;
 
@@ -164,8 +164,8 @@ int HeapUnion::nextElement() {
     // Find the place of the new element
     heap_bottom = 0;
     heap_top    = _nb_active_set - 1;
-    last_index_inf = 0;
-    last_index_sup = 0;
+    // last_index_inf = 0;
+    // last_index_sup = 0;
     int new_value   = _set[ 0 ] [ _index[0] ];
     
     cont = (heap_bottom != heap_top);
@@ -175,10 +175,10 @@ int HeapUnion::nextElement() {
 	heap_mid = (heap_top + heap_bottom)/2;
 	if( ( val = (new_value <= _set[ heap_mid ] [ _index[ heap_mid ] ] ) ) ) {
 	  heap_top    = heap_mid;
-	  last_index_inf = _set[ heap_mid ] [ _index[ heap_mid ] ];
+	  // last_index_inf = _set[ heap_mid ] [ _index[ heap_mid ] ];
 	} else {
 	  heap_bottom = heap_mid+1;
-	  last_index_sup = _set[ heap_mid ] [ _index[ heap_mid ] ];
+	  // last_index_sup = _set[ heap_mid ] [ _index[ heap_mid ] ];
 	}
 	// cont = ( (heap_top != heap_mid ) &&  (heap_bottom != heap_mid ) );
 	cont = ( (heap_top != (heap_bottom ) ) );
