@@ -74,7 +74,9 @@ class HeapUnion {
     if( it != it_end )
       return k;
     else
-      exit( 0 );
+      // GG
+      // exit( 0) 
+      return( -1 );
   }
 
   int inline getElementIndex( ) { return index_in_set; }
@@ -230,6 +232,7 @@ int HeapUnion::nextElement() {
 
 void HeapUnion::status() {
 
+#   ifdef MSG
   cout << "Set content" << endl;
   for ( int k =0; k < _nb_set; k++) {
     cout << "  " ;
@@ -246,6 +249,7 @@ void HeapUnion::status() {
   }
   cout << endl;
   cout << "Active set : " << _nb_active_set << " , finished : " << !_not_finished << endl;
+#   endif
 }
 
 # endif

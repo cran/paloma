@@ -96,7 +96,8 @@ int *getUniqPath(  SparseAdjacency & motif_, const int *Color_=0 ) {
 vector< int* > *FindMotif::find(  
 			   SparseAdjacency &G, 
 			   SparseAdjacency &motif,
-			   bool use_constraints
+			   bool use_constraints,
+			   bool color
 			   ) {
 
   // TODO Choix entre les deux listes
@@ -116,9 +117,31 @@ vector< int* > *FindMotif::find(
   int *MapToG = new int[ motif_NbrNodes];
   int k_node = 0;
 
+  // Change of type int64_t to int for color
+  // TODO : Change in the SparseAdjacency Matrix the Value 
+  //        (int64_t to a template) 
+  int *MColor = 0 ;
+  int *GColor = 0;
+  const int64_t *p_motif = motif.getNodeValues(); 
+  const int64_t *p_G = G.getNodeValues(); 
+  if( color ) {
+    MColor = new int [motif_NbrNodes];
+    GColor = new int [G_NbrNodes];
+
+    for ( int i=0; i < motif_NbrNodes; i++) {
+      MColor[i] = *p_motif++;
+    }
+    for ( int i=0; i < G_NbrNodes; i++) {
+      GColor[i] = *p_G++;
+    }
+  }
+
   // Get motif constraints
   if ( use_constraints ) {
-    setConstraints( getUniqPath( motif ));
+    if ( color )
+      setConstraints( getUniqPath( motif , MColor) );
+    else
+      setConstraints( getUniqPath( motif ));
   } else {
      // No constraints
     setConstraints( motif_NbrNodes );
@@ -135,28 +158,22 @@ vector< int* > *FindMotif::find(
 
   if ( motif.getSymmetry() &&  G.getSymmetry() ) {
 
-    // For exact motif
-    /*
-    int *ij_index_cmpl =  motif.getIndexes( true );
-    SparseAdjacency cmpl( ij_index_cmpl, 
-    		  motif.getNbrRow(), motif.getNbrCol(),   
-   			  motif.getSymmetry() );
-    */
-
-    // cmpl.print("cmpl");
-
     for ( int i = 0; i < G_NbrNodes; i++ ) {
 
       MapToG[0] = i;
-      if( G.getAllRowSize( i ) != 0)
+      if( G.getAllRowSize( i ) != 0) {
  
-	kpp_MatchUndirectedMotif( motif, G, k_node, 
-			  MapToG
-			);
-        // Exact
-	// kpp_MatchUndirectedMotif( motif, cmpl, G, k_node, 
-        //			  MapToG
-	//			  );
+	if( color ) {
+	  if (MColor[0] == GColor[i]) 
+	    kpp_MatchUndirectedColoredMotif( motif, MColor, G, GColor, 
+					     k_node, MapToG
+					     );
+	} else {
+	  kpp_MatchUndirectedMotif( motif, G, k_node, 
+				    MapToG
+				    );
+	}
+      }
     }
     
  
@@ -171,16 +188,31 @@ vector< int* > *FindMotif::find(
 
     for ( int i = 0; i < G_NbrNodes; i++ ) {
       MapToG[0] = i;
-      kpp_MatchDirectedMotif(  MotifUpper,  MotifLower, G, k_node, 
-    			       MapToG
-			    );
+      if( color ) {
+	if (MColor[0] == GColor[i]) 
+	  kpp_MatchDirectedColoredMotif( MotifUpper,  MotifLower, MColor, 
+					 G, GColor, 
+					 k_node, MapToG
+					 );
+      } else {
+	kpp_MatchDirectedMotif(  MotifUpper,  MotifLower, G, k_node, 
+				 MapToG
+				 );
+      }
     }
   } else {
+#   ifdef MSG 
     cerr << "The Graph and the motif not the same characteristics "
 	 << "(directed/undirected)" << endl;
+#   endif
   }
    vector< int*> *found_list=_FoundList;
   _FoundList = 0;
+
+  if( color ) {
+    delete [] MColor ;
+    delete [] GColor ;
+  }
 
   delete [] MapToG;
 
@@ -276,8 +308,10 @@ vector< int* > *FindMotif::findExactly(
 			    );
     }
   } else {
+#   ifdef MSG
     cerr << "The Graph and the motif not the same characteristics "
 	 << "(directed/undirected)" << endl;
+#   endif
   }
    vector< int*> *found_list=_FoundList;
 
@@ -2186,7 +2220,9 @@ void findNextGeneration( SparseAdjacency &G,
 		  MotifDir, sym, motif_size);
 	fmout.open(MotifFileName);
 	if( ! fmout.is_open() ) {
+#   ifdef MSG
 	  cerr << "Can't open motif DB file : " << MotifFileName << endl; 
+#   endif
 	  return;
 	}
 	fmout << "Motif size: " << motif_size << endl; 
@@ -2200,7 +2236,9 @@ void findNextGeneration( SparseAdjacency &G,
 		MotifDir, sym, motif_size);
       fmin.open(MotifFileName);
       if( ! fmin.good() ) {
+#   ifdef MSG 
 	cerr << "Can't open motif DB file : " << MotifFileName << endl; 
+#   endif
 	return;
       }
       fmin >> buf[0] >> ws >> buf[1] >> ws >> buf[2];
@@ -2339,10 +2377,13 @@ void FindMotif::writeList( const char *output_name,
 			   const int motif_size, 
 			   bool block_alloc ) {
   
+    
+  // save output
+
+# ifdef MSG 
   bool use_cout = false;
   ofstream *file = 0;
-    
-  // save output 
+
   streambuf* cout_buffer = cout.rdbuf();
   
   // Open 
@@ -2388,6 +2429,8 @@ void FindMotif::writeList( const char *output_name,
     // restore old output
     cout.rdbuf (cout_buffer);
   }
+# endif
+
 }
 
 // High level method
@@ -2446,7 +2489,9 @@ vector< int* > *FindMotif::findAllMotifs(
       }
     }
   } else {
+#   ifdef MSG     
      cerr << "The graph must be symmetric " << endl;
+#   endif
   } 
    vector< int*> *found_list=_FoundList;
 
@@ -2757,8 +2802,10 @@ vector< int* > *FindMotif::findShrink(
     }
     getTime( 1 );
   } else {
+#   ifdef MSG 
     cerr << "The Graph and the motif not the same characteristics "
 	 << "(directed/undirected)" << endl;
+#   endif
   }
   
   delete [] map;
@@ -2848,8 +2895,9 @@ void FindMotif::kpp_MatchUndirectedMotifShrink(
      std::cout << std::endl;
      std::cout << "Comptage partiel : " << PR << std::endl;*/
       delete[] NbNeibourghsInOccurrence;
+#   ifdef MSG
       cout << "count  = " << _Count << ", adjust = " << PR << endl;
-
+#   endif
       _Count += PR;
     } else if ( (_OutputMode == WriteMode) ||  (_OutputMode == StoreMode) ) {
       // _Count += writeOccurences( G, motif, motif, MapToG );   
@@ -3012,14 +3060,14 @@ void FindMotif::kpp_MatchUndirectedMotifShrink(
 	int64_t M_degree = motif.getAllRowSize( i );
 	int64_t Diff_degree = G_nb_poor_neighbours[MapToG[i]]+ G_degree - M_degree;
 	int64_t nb_poor_neighbours =  motif.getNodeValues()[i];
-	
+#   ifdef MSG	
 	cout << "G_nb_poor_neighbours:" << G_nb_poor_neighbours[MapToG[i]] << endl;
 	cout << "nb_poor_neighbours  :"   <<   nb_poor_neighbours << endl;
 
 	cout << " G_degree :" <<  G_degree << endl;
 	cout << " M_degree :" <<  M_degree << endl;
 	cout << " Diff_degree :" <<  Diff_degree << endl;
-	
+#   endif	
 	if ( Diff_degree >= nb_poor_neighbours ){
 	  for (int j = 0 ; j < nb_poor_neighbours ; j++){
 	    choose *= ( Diff_degree - j);
@@ -3031,15 +3079,16 @@ void FindMotif::kpp_MatchUndirectedMotifShrink(
  
       }
       cumul= static_cast<int64_t> (double( choose)/double(fact));
-
+#   ifdef MSG
       cout << " map : " ;
       for (int i = 0; i <  motif.getNbrRow(); i++) {
 	cout << MapToG[i] << " " ;
       }
       cout << endl;
 
-
       cout << " cumul : " << cumul << endl;
+#   endif
+
       _Count += cumul;
       // cout << "count ??? =" << Count << endl;
     } else if ( (_OutputMode == WriteMode) ||  (_OutputMode == StoreMode) ) {
@@ -3312,14 +3361,18 @@ void FindMotif::kpp_MatchDirectedMotifShrink(
 void buildAndfindAllMotifShrink( SparseAdjacency &G, int k, FindMotif &find,
 			   vector< int * > &motifs, vector<int64_t> &counts ) {
 
+#   ifdef MSG
   cout << " Network nodes: " <<  G.getNbrRow() << endl;
   cout << " Network edges: " <<  G.getNbrOfValues() << endl;
+#   endif
 
   int *map = new int[k];
-  SparseAdjacency ShrinkG = ShrinkMotif( G, map ); 
-
+  SparseAdjacency ShrinkG = ShrinkMotif( G, map );
+ 
+#   ifdef MSG
   cout << " Shrink Network nodes: " <<  ShrinkG.getNbrRow() << endl;
   cout << " Shrink Network edges: " <<  ShrinkG.getNbrOfValues() << endl;
+#   endif
 
   // Build Clique
   
@@ -3351,7 +3404,6 @@ void buildAndfindAllMotifShrink( SparseAdjacency &G, int k, FindMotif &find,
 # ifdef MSG
   cout << " -> Motif " << _NbrOfMotifs << " : " << find.getCount() << endl;
 # endif
-  cout << " -> Motif " << _NbrOfMotifs << " : " << find.getCount() << endl;
 
   _NbrOfMotifs = 1;
 

@@ -1451,7 +1451,7 @@ adjacencies(graph *g, int *lab, int *ptn, int level, int numcells, int tvpos,
 /*****************************************************************************
 *                                                                            *
 *  nautinv_check() checks that this file is compiled compatibly with the     *
-*  given parameters.   If not, call exit(1).                                 *
+*  given parameters.   If not, call EXIT(1).                                 *
 *                                                                            *
 *****************************************************************************/
 
@@ -1460,42 +1460,54 @@ nautinv_check(int wordsize, int m, int n, int version)
 {
         if (wordsize != WORDSIZE)
         {
+#ifdef MSG
             fprintf(ERRFILE,"Error: WORDSIZE mismatch in nautinv.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 
 #if MAXN
         if (m > MAXM)
         {
+#ifdef MSG
             fprintf(ERRFILE,"Error: MAXM inadequate in nautinv.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 
         if (n > MAXN)
         {
+#ifdef MSG
             fprintf(ERRFILE,"Error: MAXN inadequate in nautinv.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #endif
 
 #ifdef BIGNAUTY
         if ((version & 1) == 0)
-        {   
+        { 
+#ifdef MSG
             fprintf(ERRFILE,"Error: BIGNAUTY mismatch in nautinv.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #else
         if ((version & 1) == 1)
-        {   
+        {
+#ifdef MSG   
             fprintf(ERRFILE,"Error: BIGNAUTY mismatch in nautinv.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #endif
 
         if (version < NAUTYREQUIRED)
         {
+#ifdef MSG  
             fprintf(ERRFILE,"Error: nautinv.c version mismatch\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 }
 

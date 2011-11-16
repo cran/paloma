@@ -12,3 +12,5 @@ NEWS/Changelog
 1.2.1 (2011-08-23)
       + fix package warnings - pb with 'nauty' (MacOS, r-devel-linux-ix86)
 
+1.2.2 (2011-10-22)
+      + allow "mixer class" as parameter of the main function getExceptional

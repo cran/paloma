@@ -153,6 +153,7 @@ int Heap::NextCommonElement()
 
 void Heap::Debug()
 {
+#   ifdef MSG
   cout << "Heap status : " << NbLists << " lists" << endl;
   cout << "  Lists sizes: ";
   for (int i = 0; i < NbLists; i++)
@@ -170,7 +171,7 @@ void Heap::Debug()
     cout << IndexInList[i] << " ";
   cout << endl;
   cout << "  Heap size :" << HeapSize << endl;
-
+#   endif
 }
 int *Heap::Union(int &CardinalUnion)
 {

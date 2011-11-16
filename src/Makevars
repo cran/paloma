@@ -2,11 +2,11 @@
 # Used to compile Nauty library without warnings 
 # http://cs.anu.edu.au/~bdm/nauty/
 
-# R_CXXFLAGS= $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -I . -Wall -pedantic
-# R_CFLAGS= $(ALL_CPPFLAGS) $(ALL_CFLAGS) -I . -Wall -pedantic
+# R_CXXFLAGS= $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -I .  -U MSG -Wall -pedantic
+# R_CFLAGS= $(ALL_CPPFLAGS) $(ALL_CFLAGS) -I . -U MSG -Wall -pedantic
 
-R_CXXFLAGS= $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -I . 
-R_CFLAGS= $(ALL_CPPFLAGS) $(ALL_CFLAGS) -I . 
+R_CXXFLAGS= $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -I . -U MSG
+R_CFLAGS= $(ALL_CPPFLAGS) $(ALL_CFLAGS) -I . -U MSG
 
 all : $(SHLIB)
 

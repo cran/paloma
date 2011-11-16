@@ -75,5 +75,9 @@ void getCanonic(const int* m, const size_t n, const int directed, int *canon, in
   delete [] workspace;
 
   // To avoid warnings
+
+# ifdef MSG 
   LOGMSG(100, std::cout, "NULL message ", "" );
+# endif
+
 }

@@ -625,42 +625,55 @@ naugraph_check(int wordsize, int m, int n, int version)
 {
 	if (wordsize != WORDSIZE)
 	{
+#ifdef MSG	  
 	    fprintf(ERRFILE,"Error: WORDSIZE mismatch in naugraph.c\n");
-	    exit(1);
+#endif
+
+	    EXIT(1);
 	}
 
 #if MAXN
 	if (m > MAXM)
 	{
+#ifdef MSG
 	    fprintf(ERRFILE,"Error: MAXM inadequate in naugraph.c\n");
-	    exit(1);
+#endif
+	    EXIT(1);
 	}
 
 	if (n > MAXN)
 	{
+#ifdef MSG
 	    fprintf(ERRFILE,"Error: MAXN inadequate in naugraph.c\n");
-	    exit(1);
+#endif
+	    EXIT(1);
 	}
 #endif
 
 #ifdef BIGNAUTY
 	if ((version & 1) == 0)
-        {   
+        {  
+#ifdef MSG
             fprintf(ERRFILE,"Error: BIGNAUTY mismatch in naugraph.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #else
         if ((version & 1) == 1)
         {   
+#ifdef MSG
             fprintf(ERRFILE,"Error: BIGNAUTY mismatch in naugraph.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #endif
 
         if (version < NAUTYREQUIRED)
         {
+#ifdef MSG
             fprintf(ERRFILE,"Error: naugraph.c version mismatch\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 }
 

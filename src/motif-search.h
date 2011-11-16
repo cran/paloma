@@ -234,7 +234,9 @@ class FindMotif {
     _CountAllMotifs = 0;
     _Counters = 0;
     _OutputMode   = CountMode;
+# ifdef MSG
     _OutputStream = &cout;
+# endif
     _RealMotifSize = 0;
     _Constraints   = 0;
     _TopoClasses   = 0;
@@ -367,7 +369,7 @@ void inline deallocateFoundList() {
   }
 
   vector<int*> *find(  SparseAdjacency &G, SparseAdjacency &motif,
-		       bool use_constraints=true );
+		       bool use_constraints=true, bool color=false );
   vector<int*> *findExactly(  SparseAdjacency &G, SparseAdjacency &motif );
 
   vector<int*> *findShrink(  SparseAdjacency &G, SparseAdjacency &motif );

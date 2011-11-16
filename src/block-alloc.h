@@ -157,6 +157,7 @@ class BlockAllocation {
   }
   //! \brief Print
   void print() {
+#   ifdef MSG    
     for( bool cont = setBlockBegin(); cont ; cont = iterateBlock( )){
       for( int *it = getBlockDataBegin(), *it_end =  getBlockDataEnd(); 
 	   it != it_end; ) {
@@ -164,6 +165,8 @@ class BlockAllocation {
       } 
       cout << endl;
     } 
+#   endif
+
   }
 };
 

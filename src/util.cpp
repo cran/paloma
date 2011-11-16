@@ -29,6 +29,8 @@
 
 # include "util.h"
 
+int Msg_level = 1;
+
 using namespace std;
 
 //! \cond
@@ -67,12 +69,14 @@ void printList( const char *ptr,
 		const int *begin, const int *end, 
 		const char*sep, bool endl_ ) {
 
+# ifdef MSG 
   cerr << ptr;
   for( const int *it = begin; (it != end ); it++) {
       cerr << sep << *it;
   }
   if( endl_ )
     cerr << endl;
+# endif
 }
 
 
@@ -97,6 +101,7 @@ void printMatrix( const char *ptr,
 		  const bool *begin, const bool *end, int stride, 
 		  const char*sep, bool endl_ ) {
 
+# ifdef MSG 
   cout << ptr;
   const bool *row_end = begin + stride;
   for( const bool *it_row = begin; (it_row != row_end ); it_row++) {
@@ -108,22 +113,27 @@ void printMatrix( const char *ptr,
   }
   if( endl_ )
     cout << endl;
+# endif
 }
 
 void printList( const char *ptr, 
 		const int *begin, const int *end, 
 	bool endl_ ) {
 
+# ifdef MSG 
   cerr << ptr;
   for( const int *it = begin; (it != end ); it++) {
       cerr << " " << *it;
   }
   if( endl_ )
     cerr << endl;
+# endif
 }
 
 void dummy() {
+# ifdef MSG 
   LOGMSG( 10, cout , " ", " ");
+# endif
 }
 
 const int n_count=10;

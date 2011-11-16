@@ -40,6 +40,8 @@ using namespace std;
 //    Log tools
 //
 
+extern int Msg_level;
+
 void addLogContext( const char * str );
 
 void addLogTabulation( );
@@ -63,8 +65,6 @@ void removeLogTabulation() ;
 //  3 - 2 and Info message
 //  4 - 3 and Light Debug
 //  5 - 4 and Debug
-
-static int Msg_level = 1;
 
 class ErrorClass: public std::exception
 {
@@ -107,7 +107,7 @@ class ErrorClass: public std::exception
 # define MAX(a,b) ( ((a) > (b)) ? (a) : (b) ) 
 # define MIN(a,b) ( ((a) < (b)) ? (a) : (b) )
 
-# define LOGMSG( a, s, b, c)  if ((a) <= Msg_level) {		\
+# define LOGMSG( a, s, b, c)  if ((a) <= Msg_level) { \
     if ((a) != 1) { (s) << getContext() << (b) << (c) << std::endl;}	\
       else{ ErrorClass e(getContext(), (b), (c)) ; throw e; }		\
     } 
@@ -163,7 +163,7 @@ void printList( const char *ptr,
 
 void getTime_( int ID );
 void getTime_null( int ID );
- 
+
 # ifdef TIMING
    extern const int n_count=10;
    extern double counter[2*n_count];

@@ -499,9 +499,11 @@ class SparseAdjacency {
       i++;
       i++;
     }
-    if ( outofbounds ) 
+    if ( outofbounds ) {
+#   ifdef MSG 
       LOGMSG( 1, std::cout, "Index greater than one matrix dimension", "" );
-
+#   endif
+    }
     return k;
   }
 
@@ -534,9 +536,12 @@ class SparseAdjacency {
     // Verify indexes
     //
     _checkEdgeBounds( ij_index );
-    
-    if ( outofbounds ) 
+ 
+    if ( outofbounds ) { 
+#   ifdef MSG   
       LOGMSG( 1, std::cout, "Index greater than one matrix dimension", "" );
+#   endif
+    }
 
     _allocateRowAndColumnDescriptors( _MatrixSize );
 
@@ -700,8 +705,11 @@ class SparseAdjacency {
     // int u = A.getNodeValuesInc();
     // const int64_t *v = A.getNodeValues();
     // setNodeValues( v, u );
-    if( A.getNodeValues() != 0) 
+    if( A.getNodeValues() != 0)
+
+#   ifdef MSG
       cerr << "copyMatrix : Sub matrix with values : not implemented" << endl;
+#   endif
 
     NodeValues_ =0;
   } 
@@ -778,7 +786,7 @@ class SparseAdjacency {
 
   //! \brief Constructor - Empty matrix.
   SparseAdjacency() { 
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
     _MatrixSize = 0; 
     col_= 0;
     row_=0;
@@ -787,11 +795,11 @@ class SparseAdjacency {
     col_end = 0;
     row_end = 0;
     symmetric_ = false;
-    LOGOutFct( std::cout );
+    // LOGOutFct( std::cout );
   }  
 
   SparseAdjacency(const int matrix_size, bool symmetric=true ) { 
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
 
     _allocateRowAndColumnDescriptors ( matrix_size );
 
@@ -799,7 +807,7 @@ class SparseAdjacency {
 
     updateNbrOfValues_();
     NodeValues_ = 0;
-    LOGOutFct( std::cout );
+    // LOGOutFct( std::cout );
   }
   //! \brief Constructor -  The adjacency matrix is read from a file
   //! \param filename name of the file containiNg the edge list
@@ -809,11 +817,73 @@ class SparseAdjacency {
   // ??? envoyer un flux
   SparseAdjacency( const char *filename, 
 		   const bool symmetric = true, 
-		   const bool diag = false ) { 
+		   const bool diag = false, const char *format=0 ) { 
  
     ifstream infile;
     string str;
     size_t n = 0;
+    string Format;
+    bool error = false;
+
+    if (format) 
+      Format = format;
+
+    //
+    // Read Color file
+    //
+    int NbrColor = 0;
+    int64_t *color = 0;
+
+    if ( Format == "col" ) {
+      string FileColorName( filename );
+      size_t pos = FileColorName.find_last_of( "." );
+      FileColorName.erase( FileColorName.begin()+pos, FileColorName.end()) ;
+      FileColorName.append(".");
+      FileColorName.append(Format);
+
+      // Number of lines
+      infile.open (FileColorName.c_str(), ifstream::in);
+      while ( infile.good() ) {
+	infile >> str ;
+	n++;
+      }
+
+      NbrColor = n;
+      color = new int64_t[NbrColor];
+
+      // Go to the begining of the file
+      infile.close();
+      infile.open (FileColorName.c_str(), ifstream::in);
+
+      string buf[2];
+      int index = 0;
+
+      while ( infile.good() ) {
+	infile >> ws >> buf[0] >> ws ;
+
+	color[ index++ ] = atoi( buf[0].c_str() );
+      }
+      // Ajust Number of colors
+      NbrColor = index;
+
+      // Simple check
+      for ( index=0; index < NbrColor; index++) {
+	if ( (color[index] < 0) &&  (color[index] >= NbrColor) ) {
+	  error = true;
+	}
+      }
+      if (error) {
+#   ifdef MSG
+	cerr << "Bad color file: " <<  FileColorName << endl;
+#   endif
+      }
+      infile.close();
+    }
+
+    //
+    // Read edge list file
+    //
+    n = 0;
 
     infile.open (filename, ifstream::in);
     while ( infile.good() ) {
@@ -902,6 +972,7 @@ class SparseAdjacency {
     max_ind1 = MAX( max_ind1, max_ind2);
     max_ind2 = max_ind1;
 
+#   ifdef MSG
     cout << "File " << filename << " read :" << endl;  
     cout << "  Number of edges : " << NbrEdges << endl; 
     cout << "  Number of nodes : " << NodeNames.size() << endl;
@@ -925,22 +996,26 @@ class SparseAdjacency {
 	cout << "  Remain edges : " << NbrEdges - NbrLoops  << endl;
       }
     }
+#   endif
 
     // Print node names
     // for (int it = 0 ; it < NodeNames.size(); it++) {
     //  cout << it << "->" <<   NodeNames[it] << endl;
     // } 
-    initMatrix( edge, max_ind1+1 , symmetric);
 
+    if (!error)
+      initMatrix( edge, max_ind1+1 , symmetric, color);
+
+    
+    delete [] color;
     delete [] edge;
 
-    NodeValues_ = 0;
   }
 
   //
   SparseAdjacency(const int matrix_size, const char *name, bool symmetric=true ) {
  
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
 
     _allocateRowAndColumnDescriptors ( matrix_size );
 
@@ -1013,7 +1088,7 @@ class SparseAdjacency {
     
     updateNbrOfValues_();
     NodeValues_ = 0;
-    LOGOutFct( std::cout );
+    // LOGOutFct( std::cout );
   }
 
   // \brief Copy constructor
@@ -1050,11 +1125,11 @@ class SparseAdjacency {
 		     size_t NodeValuesInc = 1) { 
 
 
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
     
     initMatrix( ij_index, matrix_size, symmetric, NodeValues, NodeValuesInc );
 
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
   }
 
   //! \brief Constructor -  The adjacency matrix is filled with
@@ -1070,7 +1145,7 @@ class SparseAdjacency {
 		     const int64_t *NodeValues = 0,
 		     size_t NodeValuesInc = 1) { 
 
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
 
     symmetric_ = symmetric;
     _MatrixSize = matrix_size ;
@@ -1083,7 +1158,7 @@ class SparseAdjacency {
 
     setNodeValues( NodeValues, NodeValuesInc );
 
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
 
   }
 
@@ -1102,7 +1177,7 @@ class SparseAdjacency {
 		     size_t NodeValuesInc = 1) { 
 
     string str( type );
-    LOGInFct( std::cout );
+    // LOGInFct( std::cout );
 
     if( str.compare("dense") == 0 ) {
       symmetric_ = symmetric;
@@ -1126,7 +1201,7 @@ class SparseAdjacency {
       setNodeValues( NodeValues, NodeValuesInc );
     }
 
-    LOGInFct( std::cout );
+    // LOGOutFct( std::cout );
 
   }
 
@@ -1240,7 +1315,9 @@ class SparseAdjacency {
 
     if (  !cmpl ) {
       if( ! diag ) {
+#   ifdef MSG
 	cerr << "Not implemented" << endl;
+#   endif
       }
       ret_array = new int [ 2 *(nbr_values_ + 1)];
       
@@ -1834,15 +1911,20 @@ class SparseAdjacency {
       updateNbrOfValues_();   
       
       // NodesNames ???
-      
+
+ #   ifdef MSG     
       if( NodeValues_ != 0) 
 	cerr << "setMatrix with values : not implemented" << endl;
+#   endif
+
       delete [] A_ij_index;
       delete [] ij_index;
       delete [] new_ij_index;
       
     } else {
+#   ifdef MSG
       LOGMSG( 1, std::cout, "Not the same matrix mapping (symetry)", "" );
+#   endif
     }
   }
 
@@ -1995,6 +2077,7 @@ class SparseAdjacency {
   // void print( const char *name, const char *mode="matrix");
   void print(  const char *name, const char *mode ="matrix") {
   
+#   ifdef MSG
     std::cout << getContext() 
 	      << std::endl;
     std::cout << getContext() 
@@ -2058,6 +2141,7 @@ class SparseAdjacency {
       cout << getContext() << "number of loops  : " << nbr_diagonal_values_ << endl;
       cout << endl;
     }
+#   endif
   }
 
   //! \brief Write the matrix (dense format) in a stream 
@@ -2175,7 +2259,7 @@ int *getEdgeList( const T *matrix, const size_t matrix_size,
   int iend = matrix_size;
 
   // Count non zero values
-  for(int j=0; j < matrix_size; j++) {
+  for(size_t j=0; j < matrix_size; j++) {
 
     if( symetric )
       iend = j + 1;
@@ -2191,7 +2275,7 @@ int *getEdgeList( const T *matrix, const size_t matrix_size,
 
   // Fill edge list
   count = 0;
-  for(int j=0; j < matrix_size; j++) {
+  for(size_t j=0; j < matrix_size; j++) {
 
     if( symetric )
       iend = j + 1;

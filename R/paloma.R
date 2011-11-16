@@ -77,6 +77,26 @@ getExceptional <- function( G,
                             directed=FALSE,
                             h.filter=TRUE) {
 
+  # Treats mixer object
+  if (class(G)=="mixer") {
+    mixer <- getModel( G )
+
+    d <- dim( mixer$Taus )
+    nb_classes <- d[1]
+    nb_nodes   <- d[2]
+
+    #  NodeToClass
+    #
+    NodeToClass <- vector()
+    NodeToClass <- apply( mixer$Taus,2,function(x) which.max(x))
+    
+    #  Pi
+    #
+    Pi = t( mixer$Pis )
+    directed <- G$directed
+    G <- t( G$edges )
+  }
+  
   # Transpose G, renumber nodes and add an end index at the end of the list
   G <- testGraph(G )
 

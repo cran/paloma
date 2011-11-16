@@ -994,9 +994,16 @@ extern void naugraph_check(int,int,int,int);
 extern void nautil_check(int,int,int,int);
 extern void nautil_freedyn(void);
 extern void naugraph_freedyn(void);
+// GG : R and exit
+extern void EXIT( int );
 
 #ifdef __cplusplus
+
 }
 #endif
+
+// GG : R and stdout/stderr
+// #define MSG
+#define NOEXIT
 
 #endif  /* _NAUTY_H_ */

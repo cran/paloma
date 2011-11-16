@@ -6,17 +6,23 @@ void printTList( const char *ptr,
 		const int *begin, const int *end, 
 		bool endl_ ) {
 
+# ifdef MSG 
   cout << ptr;
   for( const int *it = begin; (it != end ); it++) {
       cout << " " << *it;
   }
   if( endl_ )
     cout << endl;
+# endif
 }
 
 
 void printTree(siblings_t *current_sibs, string &indent, int motif_size ) {
+
   indent.append( "  " );
+
+# ifdef MSG 
+
   for ( siblings_t::iterator it = current_sibs->begin(); 
 	it != current_sibs->end(); it++) {
     cout << indent ;
@@ -54,6 +60,7 @@ void printTree(siblings_t *current_sibs, string &indent, int motif_size ) {
       printTree( (*it)->_child, indent, motif_size );
     }  
   }
+# endif
   indent.erase( indent.end() - 2 , indent.end() );
 }
 
@@ -134,7 +141,9 @@ void addMotif( siblings_t *root, siblings_t *current_sibs,
 
 
   } else {
+# ifdef MSG 
     cout << "Not implemented" << endl;
+# endif
   }
 
 }
@@ -212,7 +221,9 @@ void addMotifConstraints( siblings_t *root, siblings_t *current_sibs,
     }
 
   } else {
+# ifdef MSG 
     cout << "Not implemented" << endl;
+# endif
   }
   
 }

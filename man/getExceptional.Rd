@@ -24,7 +24,9 @@ getExceptional( G,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{G}{
-    the graph is described as an edge list in a matrix
+    could be a graph or a  \code{mixer} object (output of the
+    \code{mixer} package).
+    The graph is described as an edge list in a matrix
     \code{ edges[ nbr_of_edges, 2] }. The first column contains the source
     nodes, whereas the second one concerns the destination nodes. The node
     indexes must be contiguous and the graph must not contain
@@ -159,6 +161,17 @@ out
 
 # Without classes
 out <- getExceptional( example$graph, 3, 5, pvalue=0.001)
+
+#
+# Use "mixer" R-package to cluster the graph
+#
+data(yeast)
+
+# Clustering the graph (obtain the 'pi' matrix and the vertex classes)
+res <- mixer( t( yeast$graph ), method="bayesian", qmin=2, qmax=10, directed=TRUE)
+
+out <- getExceptional( res, 3, 5, pvalue=0.001)
+out
 
 }
 \keyword{ graphs }

@@ -63,6 +63,13 @@
 #endif
 #define NAUTY_ABORT (-11)
 
+// GG : pb exit with R
+void EXIT(int code) {
+#ifndef NOEXIT
+  exit( code );
+#endif
+}
+
 typedef struct tcnode_struct
 {
 	struct tcnode_struct *next;
@@ -256,9 +263,11 @@ nauty(graph *g_arg, int *lab, int *ptn, set *active_arg,
 
 	if (dispatch.refine == NULL || dispatch.updatecan == NULL)
 	{
+#ifdef MSG
 	    fprintf(ERRFILE,"bad dispatch vector\n");
             fprintf(ERRFILE,"Did you forget to link naugraph.o?\n");
-	    exit(1);
+#endif
+	    EXIT(1);
 	}
 
 	if (options->usertcellproc) tcellproc = options->usertcellproc;
@@ -270,29 +279,37 @@ nauty(graph *g_arg, int *lab, int *ptn, set *active_arg,
         if (m_arg > INFTY/WORDSIZE+1)
         {
             stats_arg->errstatus = MTOOBIG;
+#ifdef MSG
             fprintf(ERRFILE,"nauty: need m <= %d, but m=%d\n\n",
 		    INFTY/WORDSIZE+1,m_arg);
+#endif
             return;
         }
         if (n_arg > INFTY-2 || n_arg > WORDSIZE * m_arg)
         {
             stats_arg->errstatus = NTOOBIG;
+#ifdef MSG
             fprintf(ERRFILE,"nauty: need n <= min(%d,%d*m), but n=%d\n\n",
 		    INFTY-2,WORDSIZE,n_arg);
+#endif
             return;
         }
 #else
         if (m_arg > MAXM)
         {
             stats_arg->errstatus = MTOOBIG;
+#ifdef MSG
             fprintf(ERRFILE,"nauty: need m <= %d\n\n",MAXM);
+#endif
             return;
         }
         if (n_arg > MAXN || n_arg > WORDSIZE * m_arg)
         {
             stats_arg->errstatus = NTOOBIG;
+#ifdef MSG
             fprintf(ERRFILE,
                     "nauty: need n <= min(%d,%d*m)\n\n",MAXM,WORDSIZE);
+#endif
             return;
         }
 #endif
@@ -358,7 +375,9 @@ nauty(graph *g_arg, int *lab, int *ptn, set *active_arg,
         linelength = options->linelength;
         if (digraph) tc_level = 0;
         else         tc_level = options->tc_level;
-        outfile = (options->outfile == NULL ? stdout : options->outfile);
+	// GG
+        // outfile = (options->outfile == NULL ? stderr : options->outfile);
+        outfile = (options->outfile == NULL ? NULL : options->outfile);
         usernodeproc = options->usernodeproc;
         userautomproc = options->userautomproc;
         userlevelproc = options->userlevelproc;
@@ -378,8 +397,10 @@ nauty(graph *g_arg, int *lab, int *ptn, set *active_arg,
             if (canong_arg == NULL)
             {
                 stats_arg->errstatus = CANONGNIL;
+#ifdef MSG
                 fprintf(ERRFILE,
                       "nauty: canong=NULL but options.getcanon=TRUE\n\n");
+#endif
                 return;
             }
             else
@@ -1064,42 +1085,54 @@ nauty_check(int wordsize, int m, int n, int version)
 {
         if (wordsize != WORDSIZE)
         {
+#ifdef MSG
             fprintf(ERRFILE,"Error: WORDSIZE mismatch in nauty.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 
 #if MAXN
         if (m > MAXM)
         {
+#ifdef MSG
             fprintf(ERRFILE,"Error: MAXM inadequate in nauty.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 
         if (n > MAXN)
         {
+#ifdef MSG
             fprintf(ERRFILE,"Error: MAXN inadequate in nauty.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #endif
 
 #ifdef BIGNAUTY
         if ((version & 1) == 0)
         {   
+#ifdef MSG
             fprintf(ERRFILE,"Error: BIGNAUTY mismatch in nauty.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #else
         if ((version & 1) == 1)
-        {   
+        { 
+#ifdef MSG  
             fprintf(ERRFILE,"Error: BIGNAUTY mismatch in nauty.c\n");
-            exit(1);
+#endif
+            EXIT(1);
         }
 #endif
 
 	if (version < NAUTYREQUIRED)
 	{
+#ifdef MSG
 	    fprintf(ERRFILE,"Error: nauty.c version mismatch\n");
-	    exit(1);
+#endif
+	    EXIT(1);
 	}
 }
 

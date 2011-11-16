@@ -77,7 +77,9 @@ unsigned long int ComputeEnumeration(const SparseAdjacency &G,
     {
       std::cerr << "There's a bug here, folks. It's just about time to take a look." << std::endl;
       std::cerr << "Take courage. I'm leaving with errcode 272" << std::endl;
-      exit(272);
+      // GG
+      // exit(272);
+      return( -1 );
     }
     // PrintSituation(OccurrenceVertices, OccurenceSize, NbMultipleVerticesAsNeibourghs, NbAffectedVertices, NbNeibourghsInOccurrence, PartialResult);
     // char c;
